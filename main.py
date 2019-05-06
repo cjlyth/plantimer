@@ -13,7 +13,7 @@
 # limitations under the License.
 
 # [START gae_python37_app]
-from flask import Flask
+from flask import Flask, jsonify
 import requests
 from datetime import datetime
 
@@ -46,7 +46,7 @@ app = Flask(__name__)
 @app.route('/')
 def check_is_sun_up():
     """Return a friendly HTTP greeting."""
-    return is_sun_up()
+    return jsonify(sun_is_up=is_sun_up())
 
 
 if __name__ == '__main__':

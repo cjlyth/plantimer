@@ -35,18 +35,17 @@ def get_sunrise_sunset(lat, lng):
 def is_sun_up():
     sunrise, sunset = get_sunrise_sunset("35.149532", "-90.048981")
     current_time = get_current_time()
-    print(f'Current: {current_time} - Sunrise: {sunrise} - Sunset: {sunset}')
-    return sunrise < current_time < sunset
+    sun_is_up = sunrise < current_time < sunset
+    return sun_is_up, sunrise, sunset, current_time
 
-# If `entrypoint` is not defined in app.yaml, App Engine will look for an app
-# called `app` in `main.py`.
 app = Flask(__name__)
 
 
 @app.route('/')
 def check_is_sun_up():
     """Return a friendly HTTP greeting."""
-    return jsonify(sun_is_up=is_sun_up())
+    sun_is_up, sunrise, sunset, current_time = is_sun_up()
+    return jsonify(sun_is_up=sun_is_up, sunrise=sunrise.isoformat(), sunset=sunset.isoformat(), current_time=current_time.replace(microsecond=0).isoformat())
 
 
 if __name__ == '__main__':
